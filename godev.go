@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"os/exec"
 	"path"
 	"path/filepath"
 	"strings"
@@ -20,8 +21,18 @@ func main() {
 	switch os.Args[1] {
 	case "init":
 		devInit()
+	case "up":
+		up()
 	default:
 		usage()
+	}
+}
+
+func up() {
+	cmd := exec.Command("docker-compose", "up", "-d")
+	cmd.Path = fmt.Sprintf("%s/%s", getCurrentAbsPath(), "workspace")
+	if err := cmd.Run(); err != nil {
+		log.Fatal(err)
 	}
 }
 
@@ -63,7 +74,6 @@ func devInit() {
 	if err := ioutil.WriteFile("./.gitignore", []byte(getCurrentPath()), 0755); err != nil {
 		log.Fatal(err)
 	}
-
 }
 
 func getCurrentAbsPath() string {
