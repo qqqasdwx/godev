@@ -1,10 +1,8 @@
 package main
 
 import (
-	"bufio"
 	"crypto/tls"
 	"fmt"
-	"io"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -53,46 +51,16 @@ func down() {
 	if err := cmd.Run(); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 	}
-	// stdout, err := cmd.StdoutPipe()
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
-
-	// cmd.Start()
-
-	// reader := bufio.NewReader(stdout)
-	// for {
-	// 	line, err := reader.ReadString('\n')
-	// 	if err != nil || io.EOF == err {
-	// 		break
-	// 	}
-	// 	fmt.Print(line)
-	// }
-
-	// cmd.Wait()
 }
 
 func up() {
 	cmd := exec.Command("docker-compose", "up", "-d")
 	cmd.Dir = fmt.Sprintf("%s/%s", getCurrentAbsPath(), "workspace")
-	stdout, err := cmd.StdoutPipe()
-	if err != nil {
-		log.Fatal(err)
-
+	cmd.Stderr = os.Stderr
+	cmd.Stdout = os.Stdout
+	if err := cmd.Run(); err != nil {
+		fmt.Fprintln(os.Stderr, err)
 	}
-
-	cmd.Start()
-
-	reader := bufio.NewReader(stdout)
-	for {
-		line, err := reader.ReadString('\n')
-		if err != nil || io.EOF == err {
-			break
-		}
-		fmt.Print(line)
-	}
-
-	cmd.Wait()
 }
 
 func usage() {
