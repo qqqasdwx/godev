@@ -49,11 +49,11 @@ func devInit() {
 	if err := ioutil.WriteFile("./workspace/bashrc", []byte(httpGet("file/bashrc")), 0755); err != nil {
 		log.Fatal(err)
 	}
-	filepath_list := filepath.SplitList(getCurrentAbsPath())
+
 	if err := ioutil.WriteFile("./Makefile", []byte(strings.Replace(
 		httpGet("Makefile"),
 		"$YOUR_PROJECT_PATH",
-		fmt.Sprintf("%s/%s", filepath_list[len(filepath_list)-2], filepath_list[len(filepath_list)-1]),
+		fmt.Sprintf("%s/%s", strings.Split(getCurrentAbsPath(), "/")[len(strings.Split(getCurrentAbsPath(), "/"))-2], getCurrentPath()),
 		-1)), 0755); err != nil {
 		log.Fatal(err)
 	}
