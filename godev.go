@@ -30,7 +30,7 @@ func main() {
 
 func up() {
 	cmd := exec.Command("docker-compose", "up", "-d")
-	cmd.Path = fmt.Sprintf("%s/%s", getCurrentAbsPath(), "workspace")
+	cmd.Dir = fmt.Sprintf("%s/%s", getCurrentAbsPath(), "workspace")
 	if err := cmd.Run(); err != nil {
 		log.Fatal(err)
 	}
