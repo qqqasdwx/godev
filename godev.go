@@ -1,8 +1,10 @@
 package main
 
 import (
+	"bufio"
 	"crypto/tls"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -31,9 +33,24 @@ func main() {
 func up() {
 	cmd := exec.Command("docker-compose", "up", "-d")
 	cmd.Dir = fmt.Sprintf("%s/%s", getCurrentAbsPath(), "workspace")
-	if err := cmd.Run(); err != nil {
+	stdout, err := cmd.StdoutPipe()
+	if err != nil {
 		log.Fatal(err)
+
 	}
+
+	cmd.Start()
+
+	reader := bufio.NewReader(stdout)
+	for {
+		line, err2 := reader.ReadString('\n')
+		if err2 != nil || io.EOF == err2 {
+			break
+		}
+		fmt.Println(line)
+	}
+
+	cmd.Wait()
 }
 
 func usage() {
