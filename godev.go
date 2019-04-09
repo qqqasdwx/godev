@@ -40,30 +40,36 @@ func cli() {
 	cmd.Stderr = os.Stderr
 	cmd.Stdout = os.Stdout
 	cmd.Stdin = os.Stdin
-	fmt.Fprintln(os.Stderr, cmd.Run())
+	if err := cmd.Run(); err != nil {
+		fmt.Fprintln(os.Stderr, err)
+	}
 }
 
 func down() {
 	cmd := exec.Command("docker-compose", "down")
 	cmd.Dir = fmt.Sprintf("%s/%s", getCurrentAbsPath(), "workspace")
-	stdout, err := cmd.StdoutPipe()
-	if err != nil {
-		log.Fatal(err)
-
+	cmd.Stderr = os.Stderr
+	cmd.Stdout = os.Stdout
+	if err := cmd.Run(); err != nil {
+		fmt.Fprintln(os.Stderr, err)
 	}
+	// stdout, err := cmd.StdoutPipe()
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
 
-	cmd.Start()
+	// cmd.Start()
 
-	reader := bufio.NewReader(stdout)
-	for {
-		line, err := reader.ReadString('\n')
-		if err != nil || io.EOF == err {
-			break
-		}
-		fmt.Print(line)
-	}
+	// reader := bufio.NewReader(stdout)
+	// for {
+	// 	line, err := reader.ReadString('\n')
+	// 	if err != nil || io.EOF == err {
+	// 		break
+	// 	}
+	// 	fmt.Print(line)
+	// }
 
-	cmd.Wait()
+	// cmd.Wait()
 }
 
 func up() {
