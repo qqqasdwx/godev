@@ -39,7 +39,7 @@ func cli() {
 	cmd.Dir = fmt.Sprintf("%s/%s", getCurrentAbsPath(), "workspace")
 	cmd.Stderr = os.Stderr
 	cmd.Stdout = os.Stdout
-
+	cmd.Stdin = os.Stdin
 	fmt.Fprintln(os.Stderr, cmd.Run())
 }
 
