@@ -25,9 +25,45 @@ func main() {
 		devInit()
 	case "up":
 		up()
+	case "down":
+		down()
+	case "cli":
+		cli()
 	default:
 		usage()
 	}
+}
+
+func cli() {
+	cmd := exec.Command("docker-compose", "exec", "workspace", "sh")
+	cmd.Dir = fmt.Sprintf("%s/%s", getCurrentAbsPath(), "workspace")
+	cmd.Stderr = os.Stderr
+	cmd.Stdout = os.Stdout
+
+	fmt.Fprintln(os.Stderr, cmd.Run())
+}
+
+func down() {
+	cmd := exec.Command("docker-compose", "down")
+	cmd.Dir = fmt.Sprintf("%s/%s", getCurrentAbsPath(), "workspace")
+	stdout, err := cmd.StdoutPipe()
+	if err != nil {
+		log.Fatal(err)
+
+	}
+
+	cmd.Start()
+
+	reader := bufio.NewReader(stdout)
+	for {
+		line, err := reader.ReadString('\n')
+		if err != nil || io.EOF == err {
+			break
+		}
+		fmt.Print(line)
+	}
+
+	cmd.Wait()
 }
 
 func up() {
@@ -43,18 +79,18 @@ func up() {
 
 	reader := bufio.NewReader(stdout)
 	for {
-		line, err2 := reader.ReadString('\n')
-		if err2 != nil || io.EOF == err2 {
+		line, err := reader.ReadString('\n')
+		if err != nil || io.EOF == err {
 			break
 		}
-		fmt.Println(line)
+		fmt.Print(line)
 	}
 
 	cmd.Wait()
 }
 
 func usage() {
-	fmt.Println("Usage: godev [init] [server] [test] [up] [down] [build]")
+	fmt.Println("Usage: godev [init] [up] [down] [cli]")
 }
 
 func devInit() {
