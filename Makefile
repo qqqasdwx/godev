@@ -6,4 +6,3 @@ push:
 	docker push $(IMAGE_NAME)
 clean:
 	docker rmi  $(IMAGE_NAME)
-	rm -rf build/*

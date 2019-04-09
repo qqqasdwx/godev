@@ -60,6 +60,9 @@ func devInit() {
 	if err := ioutil.WriteFile("./Dockerfile", []byte(httpGet("Dockerfile")), 0755); err != nil {
 		log.Fatal(err)
 	}
+	if err := ioutil.WriteFile("./.gitignore", []byte(getCurrentPath()), 0755); err != nil {
+		log.Fatal(err)
+	}
 
 }
 

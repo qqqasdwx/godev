@@ -6,6 +6,5 @@ RUN apk add --no-cache \
     cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
     echo Asia/Shanghai > /etc/timezone && \
     apk del tzdata
-RUN go get -u github.com/beego/bee
 
 CMD [ "/bin/sh" ]
