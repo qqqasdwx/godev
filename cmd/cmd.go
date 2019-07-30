@@ -46,7 +46,6 @@ var rootCmd = &cobra.Command{
 
 // Execute Execute
 func Execute() {
-	fmt.Println("????????")
 	rootCmd.PersistentFlags().BoolVarP(&Verbose, "verbose", "v", false, "verbose output")
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Println(err)
@@ -93,7 +92,7 @@ func httpGet(path string) string {
 func getGitCurrentTag() string {
 	command1 := exec.Command("git", "rev-list", "--tags", "--max-count=1")
 	command1.Dir = getCurrentAbsPath()
-	// command1.Stderr = os.Stderr
+	command1.Stderr = os.Stderr
 	out, err := command1.Output()
 	if err != nil {
 		fmt.Println(err)
@@ -105,7 +104,7 @@ func getGitCurrentTag() string {
 
 	command2 := exec.Command("git", "describe", "--tags", string(out))
 	command2.Dir = getCurrentAbsPath()
-	// command2.Stderr = os.Stderr
+	command2.Stderr = os.Stderr
 	tag, err := command2.Output()
 	if err != nil {
 		fmt.Println(err)
