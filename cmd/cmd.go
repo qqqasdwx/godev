@@ -46,6 +46,7 @@ var rootCmd = &cobra.Command{
 
 // Execute Execute
 func Execute() {
+	fmt.Println("????????")
 	rootCmd.PersistentFlags().BoolVarP(&Verbose, "verbose", "v", false, "verbose output")
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Println(err)
