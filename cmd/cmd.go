@@ -102,7 +102,7 @@ func getGitCurrentTag() string {
 		return "1.0.0"
 	}
 
-	command2 := exec.Command("git", "describe", "--tags", string(out))
+	command2 := exec.Command("git", "describe", "--tags", strings.Trim(string(out), "\n"))
 	command2.Dir = getCurrentAbsPath()
 	command2.Stderr = os.Stderr
 	tag, err := command2.Output()
