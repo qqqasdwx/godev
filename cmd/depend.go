@@ -55,7 +55,7 @@ var commonCmd = &cobra.Command{
 	Long:  `get common && go mod vendor -v`,
 	Run: func(cmd *cobra.Command, args []string) {
 		// fmt.Sprintf("\"go get -v %s\"", "git.secok.com/cad/common")
-		command1 := exec.Command("docker-compose", "exec", "-T", "workspace", "/bin/sh", "-c", fmt.Sprintf("\"ls -al\""))
+		command1 := exec.Command("docker-compose", "exec", "-T", "workspace", "/bin/sh", "-c", fmt.Sprintf("ls -al"))
 		command1.Dir = fmt.Sprintf("%s/%s", getCurrentAbsPath(), "workspace")
 		command1.Stderr = os.Stderr
 		command1.Stdout = os.Stdout
