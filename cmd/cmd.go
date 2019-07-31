@@ -35,6 +35,7 @@ var rootCmd = &cobra.Command{
 		"dev",
 		"merge",
 		"get",
+		"common",
 		"run",
 		"make",
 		"push",
