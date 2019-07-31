@@ -53,7 +53,7 @@ var pushCmd = &cobra.Command{
 			return
 		}
 
-		command4 := exec.Command("git", "push", "origin", pushTag)
+		command4 := exec.Command("git", "push", "origin", "master")
 		command4.Dir = getCurrentAbsPath()
 		command4.Stderr = os.Stderr
 		command4.Stdout = os.Stdout
