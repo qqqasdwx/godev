@@ -17,8 +17,9 @@ var runCmd = &cobra.Command{
 	Short: "run with go",
 	Long:  `docker-compose exec workspace /bin/sh -c "GOFLAGS=-mod=vendor go run main.go"`,
 	Run: func(cmd *cobra.Command, args []string) {
-		command := exec.Command("docker-compose", "exec", "-T", "workspace", "/bin/sh", "-c", fmt.Sprintf("GOFLAGS=-mod=vendor go run main.go"))
+		command := exec.Command("docker-compose", "exec", "workspace", "/bin/sh", "-c", fmt.Sprintf("GOFLAGS=-mod=vendor go run main.go"))
 		command.Dir = fmt.Sprintf("%s/%s", getCurrentAbsPath(), "workspace")
+		command.Stdin = os.Stdin
 		command.Stderr = os.Stderr
 		command.Stdout = os.Stdout
 		if err := command.Run(); err != nil {
