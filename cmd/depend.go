@@ -73,5 +73,14 @@ var commonCmd = &cobra.Command{
 			os.Exit(0)
 			return
 		}
+		command3 := exec.Command("pkill", "gopls")
+		command3.Dir = getCurrentAbsPath()
+		command3.Stderr = os.Stderr
+		command3.Stdout = os.Stdout
+		if err := command3.Run(); err != nil {
+			fmt.Println(err)
+			os.Exit(0)
+			return
+		}
 	},
 }
