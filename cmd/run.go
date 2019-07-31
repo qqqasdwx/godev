@@ -17,7 +17,7 @@ var runCmd = &cobra.Command{
 	Short: "run with bee",
 	Long:  `docker-compose exec workspace /bin/sh -c "GOFLAGS=-mod=vendor bee run`,
 	Run: func(cmd *cobra.Command, args []string) {
-		command := exec.Command("docker-compose", "exec", "workspace", "/bin/sh", "-c", fmt.Sprintf("GOFLAGS=-mod=vendor bee run"))
+		command := exec.Command("docker-compose", "exec", "-T", "workspace", "/bin/sh", "-c", fmt.Sprintf("GOFLAGS=-mod=vendor bee run"))
 		command.Dir = fmt.Sprintf("%s/%s", getCurrentAbsPath(), "workspace")
 		command.Stderr = os.Stderr
 		command.Stdout = os.Stdout
