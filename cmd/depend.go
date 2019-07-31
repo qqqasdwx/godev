@@ -19,7 +19,7 @@ var getCmd = &cobra.Command{
 	Long:  `go get [repo] && go mod vendor -v`,
 	Args:  cobra.MinimumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		command1 := exec.Command("docker-compose", "exec", "-it", "workspace", "/bin/sh", "-c", fmt.Sprintf("\"go get -v %s\"", args[0]))
+		command1 := exec.Command("docker-compose", "exec", "-it", "workspace", "/bin/sh", "-c", fmt.Sprintf("go get -v %s", args[0]))
 		command1.Dir = fmt.Sprintf("%s/%s", getCurrentAbsPath(), "workspace")
 		command1.Stderr = os.Stderr
 		command1.Stdout = os.Stdout
@@ -28,7 +28,7 @@ var getCmd = &cobra.Command{
 			os.Exit(0)
 			return
 		}
-		command2 := exec.Command("docker-compose", "exec", "-it", "workspace", "/bin/sh", "-c", fmt.Sprintf("\"go mod vendor -v\""))
+		command2 := exec.Command("docker-compose", "exec", "-it", "workspace", "/bin/sh", "-c", fmt.Sprintf("go mod vendor -v"))
 		command2.Dir = fmt.Sprintf("%s/%s", getCurrentAbsPath(), "workspace")
 		command2.Stderr = os.Stderr
 		command2.Stdout = os.Stdout
@@ -54,8 +54,7 @@ var commonCmd = &cobra.Command{
 	Short: "get common",
 	Long:  `get common && go mod vendor -v`,
 	Run: func(cmd *cobra.Command, args []string) {
-		// fmt.Sprintf("\"go get -v %s\"", "git.secok.com/cad/common")
-		command1 := exec.Command("docker-compose", "exec", "-T", "workspace", "/bin/sh", "-c", fmt.Sprintf("ls -al"))
+		command1 := exec.Command("docker-compose", "exec", "-T", "workspace", "/bin/sh", "-c", fmt.Sprintf("go get -v %s", "git.secok.com/cad/common"))
 		command1.Dir = fmt.Sprintf("%s/%s", getCurrentAbsPath(), "workspace")
 		command1.Stderr = os.Stderr
 		command1.Stdout = os.Stdout
@@ -65,7 +64,7 @@ var commonCmd = &cobra.Command{
 			os.Exit(0)
 			return
 		}
-		command2 := exec.Command("docker-compose", "exec", "-T", "workspace", "/bin/sh", "-c", fmt.Sprintf("\"go mod vendor -v\""))
+		command2 := exec.Command("docker-compose", "exec", "-T", "workspace", "/bin/sh", "-c", fmt.Sprintf("go mod vendor -v"))
 		command2.Dir = fmt.Sprintf("%s/%s", getCurrentAbsPath(), "workspace")
 		command2.Stderr = os.Stderr
 		command2.Stdout = os.Stdout
