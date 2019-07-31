@@ -58,7 +58,6 @@ var commonCmd = &cobra.Command{
 		command1.Dir = fmt.Sprintf("%s/%s", getCurrentAbsPath(), "workspace")
 		command1.Stderr = os.Stderr
 		command1.Stdout = os.Stdout
-		fmt.Println(command1)
 		if err := command1.Run(); err != nil {
 			fmt.Println(err)
 			os.Exit(0)
