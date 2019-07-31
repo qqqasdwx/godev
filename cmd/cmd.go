@@ -111,7 +111,7 @@ func getGitCurrentTag() string {
 		os.Exit(0)
 	}
 
-	return string(tag)
+	return strings.Trim(string(tag), "\n")
 }
 
 func getDockerTag(tag string) string {
