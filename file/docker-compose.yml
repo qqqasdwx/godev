@@ -20,6 +20,8 @@ services:
       - RUN_MODE=dev
       - MICRO_REGISTRY=consul
       - MICRO_REGISTRY_ADDRESS=172.18.0.62
+      # - MICRO_BROKER=kafka
+      # - BROKER_ADDRESS=172.18.0.62:9092
     # ports: 
     #   - 80:80 
     working_dir: /${PROJECT_PATH}
