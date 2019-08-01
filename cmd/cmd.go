@@ -77,7 +77,7 @@ func httpGet(path string) string {
 
 	client := &http.Client{Transport: tr}
 
-	resp, err := client.Get(fmt.Sprintf("https://raw.githubusercontent.com/qqqasdwx/godev/master/%s", path))
+	resp, err := client.Get(fmt.Sprintf("https://raw.githubusercontent.com/qqqasdwx/godev/intwall/%s", path))
 	if err != nil {
 		log.Fatal(err)
 	}
