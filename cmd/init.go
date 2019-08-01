@@ -53,7 +53,7 @@ var initCmd = &cobra.Command{
 			return
 		}
 
-		if err := tpl("file/git-credentials", "./workspace/.git-credentials"); err != nil {
+		if err := tpl("file/git-credentials", "./workspace/git-credentials"); err != nil {
 			fmt.Println(err)
 			return
 		}
