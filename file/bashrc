@@ -1,3 +1,3 @@
 export GOPATH=/go
 export PATH=$PATH:$GOPATH/bin
-export GOPROXY=https://goproxy.io
+alias br="bee run --gendoc=true"

@@ -1,10 +1,4 @@
 version: '3.2'
-networks:
-  dev:
-    driver: bridge
-    ipam:
-      config:
-        - subnet: 192.2.0.0/16
 services: 
   workspace:
     build:
@@ -12,13 +6,22 @@ services:
     image: ${COMPOSE_PROJECT_NAME}-workspace
     container_name: '${COMPOSE_PROJECT_NAME}-workspace'
     volumes: 
-      - ../:/${COMPOSE_PROJECT_NAME}:cached
+      - ../:/${PROJECT_PATH}:cached
       - ./bashrc:/root/.bashrc
+      - ${GOMODCACHE}/pkg/mod/:/go/pkg/mod/
+      - ./git-credentials:/root/.git-credentials
     environment: 
       - ENV=/root/.bashrc
+      - LOGGER_LEVEL=debug
+      - MYSQL_HOST=172.18.0.62
+      - SERVICE_ENV=dev
+      - GOPROXY=http://172.18.0.177
+      - CALL_SERVICE_ENV=test
+      - RUN_MODE=dev
+      - MICRO_REGISTRY=consul
+      - MICRO_REGISTRY_ADDRESS=172.18.0.62
     # ports: 
     #   - 80:80 
-    working_dir: /${COMPOSE_PROJECT_NAME}
+    working_dir: /${PROJECT_PATH}
     tty: true
-    networks: 
-      - dev
+    network_mode: host
