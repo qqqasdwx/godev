@@ -29,7 +29,7 @@ var ciCmd = &cobra.Command{
 			fmt.Println(err)
 			os.Exit(0)
 		}
-		currentBranch := strings.TrimLeft(string(out), "refs/heads/")
+		currentBranch := strings.TrimLeft(strings.Trim(string(out), "\n"), "refs/heads/")
 		if currentBranch == "master" {
 			nextTag, err := getNextTag(ciTag)
 			if err != nil {
@@ -38,7 +38,6 @@ var ciCmd = &cobra.Command{
 				return
 			}
 			fmt.Println(fmt.Sprintf("Building version: %s\n", nextTag))
-
 			command2 := exec.Command("git", "tag", "-a", nextTag, "-m", fmt.Sprintf("Released version %s", nextTag))
 			command2.Dir = getCurrentAbsPath()
 			command2.Stderr = os.Stderr
