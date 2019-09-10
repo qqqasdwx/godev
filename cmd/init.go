@@ -58,11 +58,20 @@ var initCmd = &cobra.Command{
 			return
 		}
 
+		if err := tpl("file/ci.Dockerfile", "./workspace/ci.Dockerfile"); err != nil {
+			fmt.Println(err)
+			return
+		}
+
 		if err := tpl("file/Makefile", "./Makefile"); err != nil {
 			fmt.Println(err)
 			return
 		}
 		if err := tpl("file/prod.Dockerfile", "./Dockerfile"); err != nil {
+			fmt.Println(err)
+			return
+		}
+		if err := tpl("file/.drone.yml", "./.drone.yml"); err != nil {
 			fmt.Println(err)
 			return
 		}

@@ -1,0 +1,136 @@
+---
+kind: pipeline
+name: test
+
+platform:
+  os: linux
+  arch: amd64
+
+workspace:
+  base: /go
+
+steps:
+- name: build-bin
+  image: registry.cn-beijing.aliyuncs.com/intwallyun/workspace
+  commands:
+  - go mod vendor
+  - go build -v -o ./workspace/myapp -gcflags "-N -l" main.go
+  environment:
+    CGO_ENABLED: 0
+    GO111MODULE: on
+    GOARCH: amd64
+    GOFLAGS: -mod=vendor
+    GOOS: linux
+    GOPATH: /gopath
+    GOPROXY: http://172.18.0.177
+  volumes:
+  - name: cache
+    path: /gopath
+
+- name: build-image
+  image: plugins/docker
+  pull: if-not-exists
+  settings:
+    dockerfile: ./workspace/ci.Dockerfile
+    context: ./workspace
+    registry: registry.cn-beijing.aliyuncs.com
+    repo: registry.cn-beijing.aliyuncs.com/intwallyun/{{.ProjectName}}
+    purge: false
+    tag: 2.0-test
+    username:
+      from_secret: docker_username
+    password:
+      from_secret: docker_password
+
+- name: dingtalk
+  image: plugins/webhook
+  pull: if-not-exists
+  settings:
+    urls: 
+      from_secret: dingtalk_webhook
+    content_type: application/json
+    template:
+      from_secret: dingtalk_tpl
+
+volumes:
+- name: cache
+  host:
+    path: /root/gopath
+
+image_pull_secrets:
+- dockerconfigjson
+
+trigger:
+  branch:
+  - develop
+  - release
+  - feature/*
+  event:
+  - push
+
+---
+kind: pipeline
+name: prod
+
+platform:
+  os: linux
+  arch: amd64
+
+workspace:
+  base: /go
+
+steps:
+- name: build-bin
+  image: registry.cn-beijing.aliyuncs.com/intwallyun/workspace
+  pull: if-not-exists
+  commands:
+  - go mod vendor
+  - go build -v -o ./workspace/myapp -gcflags "-N -l" main.go
+  environment:
+    CGO_ENABLED: 0
+    GO111MODULE: on
+    GOARCH: amd64
+    GOFLAGS: -mod=vendor
+    GOOS: linux
+    GOPATH: /gopath
+    GOPROXY: http://172.18.0.177
+  volumes:
+  - name: cache
+    path: /gopath
+
+- name: build-image
+  image: plugins/docker
+  settings:
+    dockerfile: ./workspace/ci.Dockerfile
+    context: ./workspace
+    registry: registry.cn-beijing.aliyuncs.com
+    repo: registry.cn-beijing.aliyuncs.com/intwallyun/{{.ProjectName}}
+    auto_tag: true
+    username:
+      from_secret: docker_username
+    password:
+      from_secret: docker_password
+
+- name: dingtalk
+  image: plugins/webhook
+  pull: if-not-exists
+  settings:
+    urls: 
+      from_secret: dingtalk_webhook
+    content_type: application/json
+    template:
+      from_secret: dingtalk_tpl
+
+volumes:
+- name: cache
+  host:
+    path: /root/gopath
+
+image_pull_secrets:
+- dockerconfigjson
+
+trigger:
+  event:
+  - tag
+
+...

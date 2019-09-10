@@ -39,6 +39,7 @@ var rootCmd = &cobra.Command{
 		"run",
 		"make",
 		"push",
+		"ci",
 	},
 	Run: func(cmd *cobra.Command, args []string) {
 		// Do Stuff Here

@@ -47,7 +47,7 @@ var devCmd = &cobra.Command{
 var mergeCmd = &cobra.Command{
 	Use:   "merge",
 	Short: "merge from develop to master",
-	Long:  `git checkout master && git merge --no-ff --no-edit develop && git branch -d develop`,
+	Long:  `git checkout master && git merge --no-ff --no-edit develop && git branch -D develop`,
 	Run: func(cmd *cobra.Command, args []string) {
 		command1 := exec.Command("git", "checkout", "master")
 		command1.Dir = getCurrentAbsPath()
@@ -65,7 +65,7 @@ var mergeCmd = &cobra.Command{
 			fmt.Println(err)
 		}
 
-		command3 := exec.Command("git", "branch", "-d", "develop")
+		command3 := exec.Command("git", "branch", "-D", "develop")
 		command3.Dir = getCurrentAbsPath()
 		command3.Stderr = os.Stderr
 		command3.Stdout = os.Stdout
