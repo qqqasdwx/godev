@@ -29,7 +29,7 @@ var ciCmd = &cobra.Command{
 			fmt.Println(err)
 			os.Exit(0)
 		}
-		currentBranch := strings.TrimLeft(strings.Trim(string(out), "\n"), "refs/heads/")
+		currentBranch := strings.TrimPrefix(strings.Trim(string(out), "\n"), "refs/heads/")
 		if currentBranch == "master" {
 			nextTag, err := getNextTag(ciTag)
 			if err != nil {

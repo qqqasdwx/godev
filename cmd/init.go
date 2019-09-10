@@ -17,6 +17,25 @@ type Project struct {
 
 func init() {
 	rootCmd.AddCommand(initCmd)
+	initCmd.AddCommand(initciCmd)
+}
+
+var initciCmd = &cobra.Command{
+	Use:   "ci",
+	Short: "init project ci",
+	Long:  `init project ci`,
+	Run: func(cmd *cobra.Command, args []string) {
+
+		if err := tpl("file/ci.Dockerfile", "./workspace/ci.Dockerfile"); err != nil {
+			fmt.Println(err)
+			return
+		}
+
+		if err := tpl("file/.drone.yml", "./.drone.yml"); err != nil {
+			fmt.Println(err)
+			return
+		}
+	},
 }
 
 var initCmd = &cobra.Command{
