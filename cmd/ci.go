@@ -47,7 +47,7 @@ var ciCmd = &cobra.Command{
 				fmt.Println(err)
 			}
 
-			command3 := exec.Command("git", "push", "origin", pushTag)
+			command3 := exec.Command("git", "push", "origin", nextTag)
 			command3.Dir = getCurrentAbsPath()
 			command3.Stderr = os.Stderr
 			command3.Stdout = os.Stdout
