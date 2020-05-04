@@ -15,7 +15,7 @@ func init() {
 var getCmd = &cobra.Command{
 	Use:   "get",
 	Short: "get [repo]",
-	Long:  `go get [repo] && go mod vendor -v`,
+	Long:  `go get [repo] && go mod vendor -v && pkill gopls`,
 	Args:  cobra.MinimumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		command1 := exec.Command("docker-compose", "exec", "workspace", "/bin/sh", "-c", fmt.Sprintf("go get -v %s", args[0]))

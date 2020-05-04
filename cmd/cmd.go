@@ -38,6 +38,7 @@ var rootCmd = &cobra.Command{
 		"run",
 		"make",
 		"push",
+		"init",
 	},
 	Run: func(cmd *cobra.Command, args []string) {
 		// Do Stuff Here
